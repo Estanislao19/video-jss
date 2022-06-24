@@ -15,13 +15,9 @@ function SimpleAppBar(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
+    <div>
       <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Bemaster videojs
-          </Typography>
-        </Toolbar>
+        
       </AppBar>
     </div>
   );

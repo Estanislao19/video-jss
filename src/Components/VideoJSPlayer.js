@@ -38,7 +38,8 @@ export default class VideoJSPlayer extends React.Component {
     this.state = { // estado global
       videoUrl: 'https://d11m3z1cau3tha.cloudfront.net/3344392a-7aa7-4fa8-95b3-aee2406014dc/hls/2_la_importancia_de_whatsapp.m3u8',
       trails: [],
-      videoid: ''
+      videoid: '',
+   
     };
     // console.log("In VideoJSPlayer.constructor.this :",this);
 
@@ -74,7 +75,7 @@ export default class VideoJSPlayer extends React.Component {
     });
 
     //-----Capturing Events for SDK-----
-  this.player.play()
+  
   
 //SDK CUANDO SE PONE PLAY
     //fired when video is played
@@ -183,12 +184,13 @@ export default class VideoJSPlayer extends React.Component {
     this.setState({ // le seteo un estado 
       videoUrl: e.target.value
     });
+    
   }
 
   onPlay(e) { 
     // console.log("In play",e);
     //si el reproductor aún no se ha inicializado, no haga nada
-    if(!this.player)return; 
+    this.player.pause();
 
     let videoUrl = this.state.videoUrl; //seteo el estado y quiero la url
 
@@ -201,6 +203,8 @@ export default class VideoJSPlayer extends React.Component {
         });
       } else {
         this.player.src(videoUrl);
+        
+        
       }
 
       var videoId = this.getVideoId(this.player.src());
@@ -211,6 +215,7 @@ export default class VideoJSPlayer extends React.Component {
       }));
       this.sdk.initialize(videoId);
       this.player.play();  //cuando le de play
+      
     }
   }
 
@@ -227,51 +232,27 @@ export default class VideoJSPlayer extends React.Component {
       <React.Fragment>
 
         <Grid item xs={6} className="videoelement">
-        <Card>
+        
             <div data-vjs-player>
-              <video ref={ node => this.videoNode = node } className="video-js"></video>
+            <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet" />
+            <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+              <video   ref={ node => this.videoNode = node } className="video-js"
+      data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 2] }' >
+              </video>
+              <video    onClick={this.onPlay}>  </video>
+              <video  onClick={this.onPause}></video>
+           
             </div>
-            <Input id="video_url" value={this.state.videoUrl} onChange={this.handleChange} className="videourl" startAdornment={<InputAdornment position="start">URL:</InputAdornment>}/>
-            <CardActions>
-            <Button variant="contained" color="primary" onClick={this.onPlay}>
-              Iniciar video
-            </Button>
-            <Button variant="contained" color="primary" onClick={this.onPause}>
-              Pausar video
-            </Button>
-            <SubscribeVideo videoid={this.state.videoid}/>
-            </CardActions>
-        </Card>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body2">Bemaster video</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-              <SampleVideos {...this}/>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+            
+            
+            
+        
+       
         </Grid>
         <Grid item xs={6}>
         <ExpansionPanel defaultExpanded>s
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body2">Active Users</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className="activeuser">
-            <SubscribeActiveUser />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body2">Popular Videos (total views)</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <PopularVideos />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel defaultExpanded>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body2">Ejecucion del video</Typography>
-          </ExpansionPanelSummary>
+          
+
           <ExpansionPanelDetails>
             <List className="listroot">
               {this.state.trails.map((trail,index) => this.renderTrail(trail,index))}
