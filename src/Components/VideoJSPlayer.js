@@ -67,7 +67,11 @@ export default class VideoJSPlayer extends React.Component {
     sdk.getUser();
 
     // iniciar video js
-    this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
+    this.player = videojs(this.videoNode, {...this.props,liveui: false,
+      controlBar: {
+        liveDisplay: false,
+        pictureInPictureToggle: false
+      }}, function onPlayerReady() {
     
       
 
@@ -231,26 +235,32 @@ export default class VideoJSPlayer extends React.Component {
     return (
       <React.Fragment>
 
-        <Grid item xs={6} className="videoelement">
-        
             <div data-vjs-player>
-            <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet" />
-            <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
-              <video   ref={ node => this.videoNode = node } className="video-js"
-      data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 2] }' >
+           
+    
+              <video   ref={ node => this.videoNode = node } className="video-js vjs-default-skin"
+      data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 2] }'
+      controls
+     
+     
+      autoplay="true" 
+      preload="auto" >
+       
               </video>
-              <video    onClick={this.onPlay}>  </video>
-              <video  onClick={this.onPause}></video>
+               <source
+        type="application/x-mpegURL"
+        id="my-hls-source"
+        
+      />
+             <video  onClick={this.onPlay}></video>
+              <video onClick={this.onPause}></video>
            
             </div>
             
-            
-            
-        
        
-        </Grid>
+       
         <Grid item xs={6}>
-        <ExpansionPanel defaultExpanded>s
+        <ExpansionPanel defaultExpanded>
           
 
           <ExpansionPanelDetails>
